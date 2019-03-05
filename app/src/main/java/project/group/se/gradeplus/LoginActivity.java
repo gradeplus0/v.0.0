@@ -3,6 +3,7 @@ package project.group.se.gradeplus;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -32,6 +33,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import project.group.se.gradeplus.students.MainActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -349,12 +352,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
             String successMessage = "Login successful : ";
             if (success) {
-                if(isLecturer)
-                    successMessage+="Lecturer";
-                else if(isStudent)
-                    successMessage+="Student";
-                else
-                    successMessage+="Admin";
+                if(isLecturer) {
+                    successMessage += "Lecturer";
+                }else if(isStudent) {
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+
+                    successMessage += "Student";
+                }else {
+                    successMessage += "Admin";
+
+                }
                 Toast.makeText(LoginActivity.this, successMessage, Toast.LENGTH_SHORT).show();
                 finish();
             } else {
