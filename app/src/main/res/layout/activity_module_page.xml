@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="2"
+    android:rowCount="4"
+    tools:context=".Admin.ModulePageActivity">
+
+    <TextView
+        android:textAlignment="center"
+        android:id="@+id/module_title"
+        android:layout_columnSpan="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"/>
+    <Button
+        android:background="@color/colorPrimaryLight"
+        android:textColor="@color/white"
+        android:id="@+id/student_list"
+        android:layout_width="match_parent"
+        android:layout_rowWeight="0.1"
+        android:text="@string/student_list_button"
+        android:layout_columnSpan="2"
+        />
+
+    <Button
+        android:background="@color/colorPrimaryLight"
+        android:textColor="@color/white"
+        android:id="@+id/lecturer"
+        android:layout_width="match_parent"
+        android:layout_columnSpan="2"
+        android:layout_rowWeight="0.1"
+        android:text="@string/lecturer_button"
+        android:layout_margin="5dp"
+        />
+
+    <Button
+        android:background="@color/colorPrimaryLight"
+        android:textColor="@color/white"
+        android:id="@+id/enrolStudent"
+        android:layout_rowWeight="0.1"
+        android:text="@string/enrol_student_button"
+        android:layout_columnWeight="0.5"
+        android:layout_marginRight="5dp"/>
+    <Button
+        android:background="@color/colorPrimaryLight"
+        android:textColor="@color/white"
+        android:id="@+id/assignLecturer"
+        android:layout_rowWeight="0.1"
+        android:text="@string/assign_lecturer_button"
+        android:layout_columnWeight="0.5"/>
+</GridLayout>

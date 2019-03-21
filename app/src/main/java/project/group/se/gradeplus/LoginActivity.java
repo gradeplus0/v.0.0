@@ -34,7 +34,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import project.group.se.gradeplus.students.MainActivity;
+import project.group.se.gradeplus.Admin.AdminHome;
+import project.group.se.gradeplus.Lecturer.LecturerHome;
+import project.group.se.gradeplus.students.StudentHome;
+import project.plusPlatform.CurrentUser;
+import project.plusPlatform.Module;
+import project.plusPlatform.ModuleOrganiser;
+import project.plusPlatform.Registry;
+import project.plusPlatform.Student;
+import project.plusPlatform.User;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -304,6 +312,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         private final String mPassword;
         private boolean isLecturer;
         private boolean isStudent;
+        private Registry database;
+        private CurrentUser user;
 
 
         UserLoginTask(String email, String password) {
@@ -311,6 +321,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mPassword = password;
             isLecturer = false;
             isStudent = false;
+            database = Registry.getInstance();
+            user = CurrentUser.getInstance();
         }
 
         @Override
@@ -323,27 +335,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             } catch (InterruptedException e) {
                 return false;
             }
-            String[] credentials = {"kmalik1122@ST.qmul.ac.uk:111222","kmalik1122@AD.qmul.ac.uk:111222"};
-            for (String credential : credentials) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail) && pieces[0].contains("ST")) {
+            Registry registry = Registry.getInstance();
+            registry.startDatabase(LoginActivity.this);
+            if(registry.isEmailExist(mEmail)) {
+                User user = registry.getUser(mEmail);
+                System.out.println(user.getName());
+                if (mEmail.contains("@ST")) {
                     // Account exists, return true if the password matches.
                     this.isStudent = true;
                     this.isLecturer = false;
-                    return pieces[1].equals(mPassword);
-                }else if(pieces[0].equals(mEmail) && pieces[0].contains("LC")){
+                    this.user.setUser(user);
+                    return registry.isPasswordRight(mPassword,mEmail);
+                }else if(mEmail.contains("@LC")){
                     this.isStudent =false;
                     this.isLecturer = true;
-                    return pieces[1].equals(mPassword);
-                }else if(pieces[0].equals(mEmail) && pieces[0].contains("AD")){
+                    this.user.setUser(user);
+                    return registry.isPasswordRight(mPassword,mEmail);
+                }else if(mEmail.contains("@AD")){
                     this.isLecturer = false;
                     this.isStudent = false;
-                    return pieces[1].equals(mPassword);
+                    this.user.setUser(user);
+                    return registry.isPasswordRight(mPassword,mEmail);
                 }
             }
-
+            registry.stopDatabase();
             // TODO: register the new account here.
-            return true;
+            return false;
         }
 
         @Override
@@ -352,15 +369,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
             String successMessage = "Login successful : ";
             if (success) {
-                if(isLecturer) {
-                    successMessage += "Lecturer";
-                }else if(isStudent) {
-                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-
+                System.out.println("Lecturer : "+isLecturer);
+                System.out.println("Student : "+isStudent);
+                if(this.isLecturer) {
+                    Intent intent = new Intent(LoginActivity.this, LecturerHome.class);
+                    startActivity(intent);
+                    successMessage+="Lecturer";
+                }else if(this.isStudent) {
+                    Intent intent = new Intent(LoginActivity.this, StudentHome.class);
+                    startActivity(intent);
                     successMessage += "Student";
-                }else {
+                }else if(!isLecturer && !isStudent){
+                    Intent intent = new Intent(LoginActivity.this, AdminHome.class);
+                    startActivity(intent);
                     successMessage += "Admin";
-
+                }else{
+                    Toast.makeText(LoginActivity.this, "Wrong information", Toast.LENGTH_SHORT).show();
                 }
                 Toast.makeText(LoginActivity.this, successMessage, Toast.LENGTH_SHORT).show();
                 finish();

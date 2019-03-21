@@ -1,8 +1,9 @@
 package project.plusPlatform;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class AssessedWork {
+public class AssessedWork implements Serializable {
 
 	private Module module;
 	private int assessedWorkId;
@@ -84,4 +85,8 @@ public class AssessedWork {
 
 	}
 
+
+	public String toString() {
+		return this.name;
+	}
 }

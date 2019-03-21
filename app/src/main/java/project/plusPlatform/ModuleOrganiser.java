@@ -6,8 +6,8 @@ public class ModuleOrganiser extends User {
 
 	private Registry database;
 
-	public ModuleOrganiser(int id, String username,String password){
-		super(id,username,password);
+	public ModuleOrganiser(int id, String emailAddress,String password){
+		super(id,emailAddress,password);
 		database = Registry.getInstance();
 	}
 

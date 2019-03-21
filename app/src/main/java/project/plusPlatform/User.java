@@ -1,5 +1,8 @@
 package project.plusPlatform;
-public abstract class User {
+
+import java.io.Serializable;
+
+public abstract class User implements Serializable {
 
 	private int id;
 	private String name;
@@ -9,8 +12,10 @@ public abstract class User {
 
 	public User(int id, String emailAddress, String password) {
 		this.id = id;
-		this.username = emailAddress;
+		this.emailAddress = emailAddress;
 		this.password = password;
+		this.name = "";
+		this.username = "";
 	}
 
 	public int getId() {
@@ -53,4 +58,8 @@ public abstract class User {
 		this.emailAddress = emailAddress;
 	}
 
+    @Override
+    public String toString() {
+        return this.name + " : "+this.emailAddress;
+    }
 }

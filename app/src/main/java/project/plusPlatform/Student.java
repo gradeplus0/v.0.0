@@ -50,4 +50,12 @@ public class Student extends User {
         return false;
 	}
 
+    @Override
+    public boolean equals(Object obj) {
+        Student st = (Student) obj;
+        if(st.getId() == this.getId()){
+            return true;
+        }
+        return false;
+    }
 }

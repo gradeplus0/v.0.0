@@ -19,4 +19,79 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_student">StudentActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_student_home">Student</string>
+    <string name="title_home">Home</string>
+    <string name="title_module">Module</string>
+    <string name="title_profile">Profile</string>
+
+
+    <!-- Profile page -->
+    <string name="save_button">Save information</string>
+    <string name="title_activity_admin">AdminActivity</string>
+
+
+    <!-- Admin Package  -->
+
+    <!-- Admin Home-->
+    <string name="module_button">Module</string>
+    <string name="registration_button">Registration</string>
+
+    <!-- Admin Registration -->
+    <string name="field_name">Name : </string>
+    <string name="field_email">Email : </string>
+    <string name="field_password">Password : </string>
+    <string name="field_type">Type : </string>
+    <string name="field_type_student">Student</string>
+    <string name="field_type_lecturer">Lecturer</string>
+    <string name="field_button">Register</string>
+
+    <!-- Module Activity -->
+    <string name="action_bar_title">Create module</string>
+
+
+    <!-- Create module activity -->
+    <string name="module_name">Module name : </string>
+    <string name="module_credits">Module credit : </string>
+    <string name="module_submit_button">Add module</string>
+
+    <!-- ModulePage activity -->
+    <string name="student_list_button">Student list</string>
+    <string name="lecturer_button">Lecturer</string>
+    <string name="assign_lecturer_button">Assign lecturer</string>
+    <string name="enrol_student_button">Enrol student</string>
+
+    <!-- LecturePage activity -->
+    <string name="lecturer_name">Lecturer name</string>
+    <string name="lecturer_id">Lecturer Id</string>
+
+    <!-- LecturerHome activity -->
+    <string name="profile_title">Profile</string>
+    <string name="module_list_title">Teaching module</string>
+    <string name="module_name_title">Module name</string>
+    <string name="module_id_title">Module id</string>
+    <string name="module_info_button">Module information</string>
+
+    <!-- WorkList activity -->
+    <string name="work_list">Assessed-Work list</string>
+    <string name="create_work">Create assessed-work</string>
+
+    <!-- CreateWork activity -->
+    <string name="assessedwork_name">Work name : </string>
+    <string name="assessedwork_percentage">Percentage : </string>
+    <string name="create_assessed_work">Create assessed-work</string>
+
+    <!-- WorkHome activity -->
+    <string name="result_title">Upload results</string>
+    <string name="publish_title">Publish results</string>
+
+    <!-- ResultScreen activity -->
+    <string name="student_name_title">Name : </string>
+    <string name="student_marks">Marks (0-100) : </string>
+    <string name="student_feedback">Feedback : </string>
+    <string name="student_uploade">Upload results</string>
+    <string name="refresh_screen">Refresh screen</string>
 </resources>

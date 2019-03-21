@@ -1,7 +1,8 @@
 package project.plusPlatform;
+import java.io.Serializable;
 import java.util.*;
 
-public class Module {
+public class Module implements Serializable {
 
 	private Registry database;
 	private int moduleId;
@@ -72,14 +73,18 @@ public class Module {
 		return this.assessedWorks;
 	}
 
-	public boolean addAssessedWork(String name) {
+	public boolean addAssessedWork(int id,String name) {
 	    for(AssessedWork work : assessedWorks){
 	        if(work.getName().equals(name)){
 	            return false;
             }
         }
-        AssessedWork newWork = new AssessedWork(assessedWorks.size(),name);
-	    return true;
+        AssessedWork newWork = new AssessedWork(id,name);
+	    return this.assessedWorks.add(newWork);
 	}
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

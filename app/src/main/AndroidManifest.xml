@@ -13,10 +13,69 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Lecturer.ResultScreenActivity"></activity>
+        <activity android:name=".Lecturer.ResultActivity" />
+        <activity android:name=".Lecturer.WorkHome" />
         <activity
-            android:name=".students.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".Lecturer.CreateWorkActivity"
+            android:parentActivityName=".Lecturer.WorkListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Lecturer.WorkListActivity" />
+        </activity>
+        <activity android:name=".Lecturer.WorkListActivity" />
+        <activity android:name=".Lecturer.LecturerHome" />
+        <activity android:name=".Admin.AssignLecturer" />
+        <activity
+            android:name=".Admin.EnrolStudent"
+            android:parentActivityName=".Admin.ModulePageActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Admin.ModulePageActivity" />
+        </activity>
+        <activity
+            android:name=".Admin.LecturerPage"
+            android:parentActivityName=".Admin.ModulePageActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Admin.ModulePageActivity" />
+        </activity>
+        <activity
+            android:name=".Admin.StudentList"
+            android:parentActivityName=".Admin.ModulePageActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Admin.ModulePageActivity" />
+        </activity>
+        <activity
+            android:name=".Admin.ModulePageActivity"
+            android:parentActivityName=".Admin.ModuleActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Admin.ModuleActivity" />
+        </activity>
+        <activity
+            android:name=".Admin.CreateModuleActivity"
+            android:parentActivityName=".Admin.ModuleActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Admin.ModuleActivity" />
+        </activity>
+        <activity
+            android:name=".Admin.ModuleActivity"
+            android:parentActivityName=".Admin.AdminHome">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Admin.AdminHome" />
+        </activity>
+        <activity
+            android:name=".Admin.RegistrationActivity"
+            android:parentActivityName=".Admin.AdminHome">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Admin.AdminHome" />
+        </activity>
+        <activity android:name=".Admin.AdminHome" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name">
@@ -25,6 +84,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".students.StudentHome"
+            android:label="@string/title_activity_student_home"
+            android:parentActivityName=".LoginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="project.group.se.gradeplus.LoginActivity" />
         </activity>
     </application>
 

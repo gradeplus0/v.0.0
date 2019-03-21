@@ -1,7 +1,8 @@
 package project.plusPlatform;
+import java.io.Serializable;
 import java.util.*;
 
-public class Lecturer extends User {
+public class Lecturer extends User implements Serializable {
 
 	private Registry database;
 	private List<Module> modules;
@@ -44,7 +45,7 @@ public class Lecturer extends User {
 	 * @param module
 	 */
 	public boolean createAssessedWork(Module module,String name) {
-		return module.addAssessedWork(name);
+		return module.addAssessedWork(module.getAssessedWorks().size(),name);
 	}
 
 }
