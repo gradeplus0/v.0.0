@@ -246,21 +246,21 @@ public class Registry implements Serializable {
         return null;
     }
 
-    public Map<Integer, Integer> getResultsFromAssessedWork(int work_id) {
-        try {
-            String query = "SELECT result_id, result_mark from Result, AssessedWork where Result.result_id = AssessedWork.result_id && Result.result_id = ?";
-            Cursor cs = this.readDatabase.rawQuery(query, new String[]{String.valueOf(work_id)});
-            Map<Integer, Integer> results = new HashMap<Integer, Integer>();
-            while (cs.moveToNext()) {
-                results.put(cs.getInt(0), cs.getInt(1));
-            }
-            cs.close();
-            return results;
-        } catch (SQLException e) {
-            System.out.println("Error : getResultsFromAssessedWork()");
-        }
-        return null;
-    }
+//    public Map<Integer, Integer> getResultsFromAssessedWork(int work_id) {
+//        try {
+//            String query = "SELECT result_id, result_mark from Result, AssessedWork where Result.result_id = AssessedWork.result_id and Result.result_id = ?";
+//            Cursor cs = this.readDatabase.rawQuery(query, new String[]{String.valueOf(work_id)});
+//            Map<Integer, Integer> results = new HashMap<Integer, Integer>();
+//            while (cs.moveToNext()) {
+//                results.put(cs.getInt(0), cs.getInt(1));
+//            }
+//            cs.close();
+//            return results;
+//        } catch (SQLException e) {
+//            System.out.println("Error : getResultsFromAssessedWork()");
+//        }
+//        return null;
+//    }
 
     public int getMarksOfStudent(int id) {
         try {
@@ -708,8 +708,8 @@ public class Registry implements Serializable {
 
     public boolean uploadResult(AssessedWork work){
         try {
-            this.writeDatabase.execSQL("UPDATE TABLE AssessedWork " +
-                    "SET result_uploaded = 'true'" +
+            this.writeDatabase.execSQL("UPDATE AssessedWork " +
+                    "SET result_uploaded = 'true' " +
                     "WHERE work_id = " + work.getAssessedWorkId());
             return true;
         }catch (Exception ex){
@@ -718,6 +718,99 @@ public class Registry implements Serializable {
         }
         return false;
     }
+
+
+    // ********************************************************************************************************* //
+
+    // ****************************************** Student ****************************************************** //
+
+
+
+    public List<Module> getModulesOfStudent(Student student){
+        try{
+            String getAllModules = "SELECT module_id, module_name FROM Module WHERE module_id IN (SELECT module_id FROM UserModuleProxy WHERE user_id = ?)";
+            Cursor cs = this.readDatabase.rawQuery(getAllModules,new String[]{String.valueOf(student.getId())});
+            List<Module> modules = new ArrayList<>();
+            while(cs.moveToNext()){
+                modules.add(new Module(cs.getInt(0),cs.getString(1)));
+            }
+            student.setModules(modules);
+            return modules;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            System.out.println("Error : getModulesOfStudent()");
+        }
+        return null;
+    }
+
+    public String getFeedback(int feedback_id){
+        Cursor cs = this.readDatabase.rawQuery("SELECT feedback_value from Feedback where feedback_id = ?", new String[]{String.valueOf(feedback_id)});
+        if(cs.getCount()>0){
+            cs.moveToFirst();
+            return cs.getString(0);
+        }
+        return null;
+    }
+
+
+    public Result getResult(AssessedWork work, Student student){
+        boolean initialised = this.isResultInitialised(work);
+        if(initialised){
+            boolean uploaded = this.isResultUploaded(work);
+            if(uploaded){
+                Result result = new Result(work.getName());
+                String query = "SELECT result_mark, feedback_id FROM Result where user_id = ? and work_id = ?";
+                Cursor cs = this.readDatabase.rawQuery(query,new String[]{String.valueOf(student.getId()),String.valueOf(work.getAssessedWorkId())});
+                cs.moveToFirst();
+                result.setMarks(cs.getInt(0));
+                String feedback = this.getFeedback(cs.getInt(1));
+                System.out.println("Marks : "+cs.getInt(0) + "  :  feedback : "+feedback);
+                if(feedback !=null){
+                    result.setFeedback(feedback);
+                }
+                return result;
+            }
+        }
+        return null;
+    }
+
+    public List<Result> getMarksForStudent(Student student){
+        try {
+            List<Module> modules = this.getModulesOfStudent(student);
+            System.out.println("Stage___ 1");
+            if (modules != null) {
+                List<Result> results = new ArrayList<>();
+                for (Module module : modules) {
+                    System.out.println(module);
+                    List<AssessedWork> works = this.getAllAssessedWork(module);
+                    System.out.println(works);
+                    System.out.println("Stage___ 2");
+                    if (works != null) {
+                        module.setAssessedWorks(works);
+                        for (AssessedWork work : works) {
+                            Result result = this.getResult(work,student);
+                            result.setModuleName(module.getName());
+                            results.add(result);
+                        }
+                        System.out.println("Stage___ 3");
+                    }
+                }
+                return results;
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+            System.out.println("Error : getMarksForStudent()");
+        }
+        return null;
+    }
+
+    public void deleteUnwantedRecords(){
+        this.writeDatabase.execSQL("DELETE FROM UserModuleProxy WHERE user_id IN (2,3,4)");
+        this.writeDatabase.execSQL("DELETE FROM User WHERE user_id IN (2,3,4)");
+        System.out.println("Unwanted Record deleted");
+    }
+
+    // ********************************************************************************************************* //
 
 
 }

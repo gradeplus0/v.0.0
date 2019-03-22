@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Database extends SQLiteOpenHelper implements Serializable {
 
     private static final String DB_NAME = "Gradeplus";
-    private static final int DB_VERSION = 5;
+    private static final int DB_VERSION = 6;
     private enum userTypes {
         ADMIN, STUDENT, LECTURER
     }
@@ -87,11 +87,22 @@ public class Database extends SQLiteOpenHelper implements Serializable {
             values.put("result_uploaded","false");
             db.update("AssessedWork",values,null,null);
         }
-        if(newVersion >4){
+        if(newVersion ==5){
             ContentValues values = new ContentValues();
             values.put("user_email","kmalik@AD.qmul.ac.uk");
             values.put("user_password","111222");
             db.insert("User",null,values);
+        }
+
+        if(newVersion >5){
+            db.execSQL("ALTER TABLE AssessedWork RENAME TO _trash");
+            db.execSQL( "CREATE TABLE AssessedWork (" +
+                    "work_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "work_name TEXT," +
+                    "result_id INTEGER," +
+                    "result_uploaded DEFAULT 'false');");
+            db.execSQL("INSERT INTO AssessedWork (work_id, work_name, result_id) SELECT work_id, work_name, result_id FROM _trash;");
+            System.out.println("****************************** AssessedWork table changed");
         }
     }
 }

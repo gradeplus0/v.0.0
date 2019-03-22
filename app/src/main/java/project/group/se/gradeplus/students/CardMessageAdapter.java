@@ -41,7 +41,6 @@ public class CardMessageAdapter extends RecyclerView.Adapter<CardMessageAdapter.
         message.setTextColor(Color.WHITE);
         int random = (int)( (Math.random()*colors.length));
         card.setCardBackgroundColor(getRandomColor());
-        System.out.println(random);
     }
     public int getRandomColor(){
         Random rnd = new Random();

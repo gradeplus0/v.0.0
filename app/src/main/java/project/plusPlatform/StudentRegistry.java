@@ -53,12 +53,12 @@ public class StudentRegistry {
         return null;
     }
 
-    public void getResults(AssessedWork work){
-        if(context != null){
-            Map<Integer, Integer> results = registry.getResultsFromAssessedWork(work.getAssessedWorkId());
-            work.setResults(results);
-        }
-    }
+   // public void getResults(AssessedWork work){
+     //   if(context != null){
+            //Map<Integer, Integer> results = registry.getResultsFromAssessedWork(work.getAssessedWorkId());
+       //     work.setResults(results);
+        //}
+    //}
 
     public int getMarksOfStudent(Student student){
         if(context != null){

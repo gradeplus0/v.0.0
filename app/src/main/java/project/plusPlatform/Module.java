@@ -87,4 +87,8 @@ public class Module implements Serializable {
     public String toString() {
         return this.name;
     }
+
+    public void setAssessedWorks(List<AssessedWork> assessedWorks) {
+        this.assessedWorks = assessedWorks;
+    }
 }

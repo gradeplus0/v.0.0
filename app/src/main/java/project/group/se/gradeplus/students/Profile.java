@@ -46,7 +46,6 @@ public class Profile extends Fragment {
             email = (EditText)view.findViewById(R.id.student_email);
             password = (EditText) view.findViewById(R.id.student_password);
             saveBtn = (Button) view.findViewById(R.id.save_button);
-            System.out.println(user.getId());
             id.setText(user.getId()+"");
             if(!user.getName().equals("")){
                 name.setText(user.getName());
