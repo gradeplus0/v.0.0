@@ -33,7 +33,7 @@ public class Home extends Fragment {
     private Result bestModule;
     private Result worstModule;
     private Result bestWork; // Done
-    private Result worstWork; // Done
+    private Result worstWork; // Done3
     private Result[] topThree;
 
     @Override

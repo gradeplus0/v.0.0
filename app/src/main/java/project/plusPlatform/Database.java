@@ -29,7 +29,7 @@ public class Database extends SQLiteOpenHelper implements Serializable {
     }
 
     public void makeDatabase(SQLiteDatabase db, int oldVersion, int newVersion){
-        if(oldVersion == 1 && newVersion == 1){
+        if(oldVersion <2){
             String commentTable = "CREATE TABLE Comment (" +
                     "work_id INTEGER," +
                     "comment_value TEXT)";
@@ -72,37 +72,26 @@ public class Database extends SQLiteOpenHelper implements Serializable {
             System.out.println("Database is created");
         }
 
-        if(newVersion ==2){
+        if(newVersion <3){
             db.execSQL("ALTER TABLE Result ADD user_id INTEGER");
             System.out.println("Table is altered");
         }
 
-        if(newVersion ==3){
+        if(newVersion <4){
             db.execSQL("ALTER TABLE Result ADD work_id INTEGER");
         }
 
-        if(newVersion ==4){
+        if(newVersion <5){
             db.execSQL("ALTER TABLE AssessedWork ADD result_uploaded TEXT");
             ContentValues values = new ContentValues();
             values.put("result_uploaded","false");
             db.update("AssessedWork",values,null,null);
         }
-        if(newVersion ==5){
+        if(newVersion <6){
             ContentValues values = new ContentValues();
             values.put("user_email","kmalik@AD.qmul.ac.uk");
             values.put("user_password","111222");
             db.insert("User",null,values);
-        }
-
-        if(newVersion >5){
-            db.execSQL("ALTER TABLE AssessedWork RENAME TO _trash");
-            db.execSQL( "CREATE TABLE AssessedWork (" +
-                    "work_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "work_name TEXT," +
-                    "result_id INTEGER," +
-                    "result_uploaded DEFAULT 'false');");
-            db.execSQL("INSERT INTO AssessedWork (work_id, work_name, result_id) SELECT work_id, work_name, result_id FROM _trash;");
-            System.out.println("****************************** AssessedWork table changed");
         }
     }
 }
