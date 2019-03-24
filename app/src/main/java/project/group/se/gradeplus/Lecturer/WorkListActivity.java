@@ -26,6 +26,7 @@ public class WorkListActivity extends AppCompatActivity {
     private List<AssessedWork> works;
     private Module module;
     private ListView list;
+    private boolean workThere =false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +41,10 @@ public class WorkListActivity extends AppCompatActivity {
         System.out.println("******************************** : "+works);
         ArrayAdapter<AssessedWork> adapter = null;
         if(works==null){
+            workThere = false;
             adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,new AssessedWork[]{new AssessedWork(-1,"There are no assessedWork created yet")});
         }else{
+            workThere = true;
             adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,works);
         }
         list.setAdapter(adapter);
@@ -73,15 +76,17 @@ public class WorkListActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             WorkListActivity that = WorkListActivity.this;
-            AssessedWork work = that.works.get(position);
-            if(work.getAssessedWorkId() != -1){
-                Intent intent = new Intent(WorkListActivity.this,WorkHome.class);
-                intent.putExtra(WorkHome.MODULE_NAME,that.module.getName());
-                intent.putExtra(WorkHome.MODULE_ID,that.module.getModuleId());
-                AssessedWork wrk = works.get(position);
-                intent.putExtra(WorkHome.WORK_ID,wrk.getAssessedWorkId());
-                intent.putExtra(WorkHome.WORK_NAME,wrk.getName());
-                startActivity(intent);
+            if(that.workThere) {
+                AssessedWork work = that.works.get(position);
+                if (work.getAssessedWorkId() != -1) {
+                    Intent intent = new Intent(WorkListActivity.this, WorkHome.class);
+                    intent.putExtra(WorkHome.MODULE_NAME, that.module.getName());
+                    intent.putExtra(WorkHome.MODULE_ID, that.module.getModuleId());
+                    AssessedWork wrk = works.get(position);
+                    intent.putExtra(WorkHome.WORK_ID, wrk.getAssessedWorkId());
+                    intent.putExtra(WorkHome.WORK_NAME, wrk.getName());
+                    startActivity(intent);
+                }
             }
         }
     }

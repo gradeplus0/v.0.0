@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Lecturer.ResultScreenActivity"></activity>
+        <activity android:name=".students.StudentModuleInfo"></activity>
+        <activity android:name=".Lecturer.ResultScreenActivity" />
         <activity android:name=".Lecturer.ResultActivity" />
         <activity android:name=".Lecturer.WorkHome" />
         <activity
