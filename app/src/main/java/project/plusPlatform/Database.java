@@ -72,22 +72,22 @@ public class Database extends SQLiteOpenHelper implements Serializable {
             System.out.println("Database is created");
         }
 
-        if(newVersion <3){
+        if(oldVersion <3){
             db.execSQL("ALTER TABLE Result ADD user_id INTEGER");
             System.out.println("Table is altered");
         }
 
-        if(newVersion <4){
+        if(oldVersion <4){
             db.execSQL("ALTER TABLE Result ADD work_id INTEGER");
         }
 
-        if(newVersion <5){
+        if(oldVersion <5){
             db.execSQL("ALTER TABLE AssessedWork ADD result_uploaded TEXT");
             ContentValues values = new ContentValues();
             values.put("result_uploaded","false");
             db.update("AssessedWork",values,null,null);
         }
-        if(newVersion <6){
+        if(oldVersion <6){
             ContentValues values = new ContentValues();
             values.put("user_email","kmalik@AD.qmul.ac.uk");
             values.put("user_password","111222");

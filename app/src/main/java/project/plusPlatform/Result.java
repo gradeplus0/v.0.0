@@ -61,6 +61,12 @@ public class Result implements Comparable {
         }
         return -1;
     }
+    public boolean sameModule(String name){
+        if(this.moduleName.equalsIgnoreCase(name)){
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public String toString() {

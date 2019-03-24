@@ -30,10 +30,10 @@ public class Home extends Fragment {
         // Required empty public constructor
     }
 
-    private Result bestModule;
-    private Result worstModule;
+    private Result bestModule; // Done
+    private Result worstModule; // Done
     private Result bestWork; // Done
-    private Result worstWork; // Done3
+    private Result worstWork; // Done
     private Result[] topThree;
 
     @Override
@@ -43,11 +43,20 @@ public class Home extends Fragment {
         registry.startDatabase(getContext());
         Student student = (Student) CurrentUser.getInstance().getUser();
         List<Result> results = registry.getMarksForStudent(student);
-        String[] allInfo = new String[20];
-
-        System.out.println(results);
-        registry.stopDatabase();
-
+        String[] allInfo = null;
+        if(results !=null) {
+            allInfo = new String[4];
+            registry.stopDatabase();
+            this.sort(results);
+            organiseModules(results);
+            allInfo[2] = "Your best module\n\n" + bestModule.getModuleName();
+            allInfo[3] = "Need to work hard (module)\n\n" + worstModule.getModuleName();
+            allInfo[0] = "Best assessed-work(module)\n\n " + bestWork.getWork() + " (" + bestWork.getModuleName() + ")";
+            allInfo[1] = "Worst assessed-work(module)\n\n " + worstWork.getWork() + " (" + worstWork.getModuleName() + ")";
+        }else{
+            allInfo = new String[1];
+            allInfo[0] = "Marks are not published yet";
+        }
         RecyclerView messageRecycler = (RecyclerView) inflater.inflate(R.layout.fragment_home,container,false);
         CardMessageAdapter adapter = new CardMessageAdapter(allInfo);
         messageRecycler.setAdapter(adapter);
@@ -66,7 +75,11 @@ public class Home extends Fragment {
                 for (int x = 0; x < results.size() - 1; x++) {
                     if (results.get(x).compareTo(results.get(x + 1)) == 1) {
                         Result deleted = results.remove(x);
-                        results.set(x + 1, deleted);
+                        if(results.size() == x+1){
+                            results.add(deleted);
+                        }else {
+                            results.set(x + 1, deleted);
+                        }
                         sorted = false;
                     }
                 }
@@ -75,6 +88,78 @@ public class Home extends Fragment {
             this.bestWork = results.get(results.size()-1);
             this.worstWork = results.get(0);
         }
+    }
+
+
+    private void organiseModules(List<Result> results){
+        List<String> modulenames = new ArrayList<>();
+        List<Double> averages = new ArrayList<>();
+        List<Integer> counter = new ArrayList<>();
+        for(int i = 0; i<results.size();i++){
+            Result result = results.get(i);
+            if(modulenames.contains(result.getModuleName())){
+                int marks = result.getMarks();
+                int index = modulenames.indexOf(result.getModuleName());
+                int count = counter.get(index);
+                double average = averages.get(index);
+                double newAverage  =((average*count)+marks)/(count+1);
+                averages.set(index,newAverage);
+                counter.set(index,count+1);
+            }else{
+                modulenames.add(result.getModuleName());
+                averages.add((double) result.getMarks());
+                counter.add(1);
+            }
+        }
+        if(modulenames.size()>1) {
+            boolean sorted = false;
+            while (!sorted) {
+                sorted = true;
+                for (int i = 0; i < modulenames.size() - 1; i++) {
+                    if (averages.get(i) > averages.get(i + 1)) {
+                        String helper = modulenames.get(i+1);
+                        modulenames.set(i+1,modulenames.get(i));
+                        modulenames.set(i,helper);
+
+                        double helper1 = averages.get(i+1);
+                        averages.set(i+1,averages.get(i));
+                        averages.set(i,helper1);
+
+                        int count = counter.get(i+1);
+                        counter.set(i+1,counter.get(i));
+                        counter.set(i,count);
+                    }
+                }
+            }
+            String best = modulenames.get(modulenames.size()-1);
+            Result reqModule = this.compare(results,best);
+            if(reqModule!=null){
+                bestModule = reqModule;
+            }
+
+            String worst = modulenames.get(0);
+            Result reqModule2 = this.compare(results,worst);
+            if(reqModule2 !=null){
+                worstModule = reqModule2;
+            }
+        }else{
+            bestModule = results.get(0);
+            worstModule = bestModule;
+        }
+
+    }
+
+    public Result compare(List<Result> results,String module){
+        if(results !=null){
+            for(Result result: results){
+                if(result!=null){
+                    if(result.sameModule(module)){
+                        return result;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 }

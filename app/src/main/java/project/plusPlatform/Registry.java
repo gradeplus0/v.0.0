@@ -783,14 +783,15 @@ public class Registry implements Serializable {
                 for (Module module : modules) {
                     System.out.println(module);
                     List<AssessedWork> works = this.getAllAssessedWork(module);
-                    System.out.println(works);
                     System.out.println("Stage___ 2");
                     if (works != null) {
                         module.setAssessedWorks(works);
                         for (AssessedWork work : works) {
                             Result result = this.getResult(work,student);
-                            result.setModuleName(module.getName());
-                            results.add(result);
+                            if(result!=null) {
+                                result.setModuleName(module.getName());
+                                results.add(result);
+                            }
                         }
                         System.out.println("Stage___ 3");
                     }
@@ -802,12 +803,6 @@ public class Registry implements Serializable {
             System.out.println("Error : getMarksForStudent()");
         }
         return null;
-    }
-
-    public void deleteUnwantedRecords(){
-        this.writeDatabase.execSQL("DELETE FROM UserModuleProxy WHERE user_id IN (2,3,4)");
-        this.writeDatabase.execSQL("DELETE FROM User WHERE user_id IN (2,3,4)");
-        System.out.println("Unwanted Record deleted");
     }
 
     // ********************************************************************************************************* //
