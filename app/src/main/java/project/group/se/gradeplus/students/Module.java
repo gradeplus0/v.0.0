@@ -52,7 +52,8 @@ public class Module extends Fragment {
             registry.startDatabase(getContext());
             Student student = (Student) CurrentUser.getInstance().getUser();
             List<project.plusPlatform.Module> modules = registry.getModulesOfStudent(student);
-            if (modules != null) {
+            if (modules != null && modules.size()>0) {
+                student.setModules(modules);
                 isEnrolled = true;
                 adapter = new ArrayAdapter<project.plusPlatform.Module>(getContext(), android.R.layout.simple_list_item_1, modules);
             } else {

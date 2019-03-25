@@ -45,10 +45,10 @@ public class StudentModuleInfo extends AppCompatActivity {
         works = registry.getAsssessedWorkByModule(module.getModuleId());
         System.out.println(works);
         if(works!=null && works.size()>0){
+
             isUploaded = true;
             adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,works);
         }else{
-            System.out.println("there cousework");
             isUploaded = false;
             works = new ArrayList<>();
             works.add(new AssessedWork(-1,"There is not assessed work created yet."));
@@ -59,11 +59,23 @@ public class StudentModuleInfo extends AppCompatActivity {
     }
 
     public class ListListener implements ListView.OnItemClickListener{
-
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if(isUploaded){
-                Toast.makeText(StudentModuleInfo.this, "Click", Toast.LENGTH_SHORT).show();
+                AssessedWork work = works.get(position);
+                Registry registry = Registry.getInstance();
+                if(registry.isResultUploaded(work)) {
+                    Intent intent = new Intent(StudentModuleInfo.this, ResultActivity.class);
+                    intent.putExtra(ResultActivity.MODULE_ID, module.getModuleId());
+                    intent.putExtra(ResultActivity.MODULE_NAME, module.getName());
+                    intent.putExtra(ResultActivity.WORK_ID, work.getAssessedWorkId());
+                    intent.putExtra(ResultActivity.WORK_NAME, work.getName());
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(StudentModuleInfo.this, "Result is not published yet", Toast.LENGTH_SHORT).show();
+                }
+
+                registry.stopDatabase();
             }
         }
     }

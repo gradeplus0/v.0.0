@@ -44,24 +44,32 @@ public class RegistrationActivity extends AppCompatActivity {
                 String user_name = name.getText().toString();
                 String user_email = email.getText().toString();
                 String user_pass = password.getText().toString();
-                String type = "";
-                User user = null;
-                if(student.isChecked()){
-                    type="Student";
-                    user = new Student(registry.getTotalStudents()+1,user_email,user_pass);
-                    user.setName(user_name);
-                }else {
-                    type="Lecturer";
-                    user = new Lecturer(registry.getLecturers().size(),user_email,user_pass);
-                    user.setName(user_name);
-                }
-                registry.startDatabase(getApplicationContext());
-                if(registry.addUser(user,type)){
-                    Toast.makeText(RegistrationActivity.this, type+" is added", Toast.LENGTH_SHORT).show();
+                if(!user_name.isEmpty() || !user_email.isEmpty() || !user_pass.isEmpty()) {
+                    String type = "";
+                    User user = null;
+                    if(student.isChecked() || lecturer.isChecked()) {
+                        if (student.isChecked()) {
+                            type = "Student";
+                            user = new Student(registry.getTotalStudents() + 1, user_email+"@ST.qmul.ac.uk", user_pass);
+                            user.setName(user_name);
+                        } else {
+                            type = "Lecturer";
+                            user = new Lecturer(registry.getLecturers().size(), user_email+"@LC.qmul.ac.uk", user_pass);
+                            user.setName(user_name);
+                        }
+                        registry.startDatabase(getApplicationContext());
+                        if (registry.addUser(user, type)) {
+                            Toast.makeText(RegistrationActivity.this, type + " is added", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(RegistrationActivity.this, type + " is not added", Toast.LENGTH_SHORT).show();
+                        }
+                        registry.stopDatabase();
+                    }else{
+                        Toast.makeText(RegistrationActivity.this, "Please enter the type of user", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
-                    Toast.makeText(RegistrationActivity.this, type+" is not added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistrationActivity.this, "Please enter all details", Toast.LENGTH_SHORT).show();
                 }
-                registry.stopDatabase();
             }
         });
     }

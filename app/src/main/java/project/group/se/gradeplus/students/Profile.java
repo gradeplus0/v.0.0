@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import project.group.se.gradeplus.R;
 import project.plusPlatform.CurrentUser;
+import project.plusPlatform.Registry;
 import project.plusPlatform.Student;
 
 /**
@@ -61,6 +63,12 @@ public class Profile extends Fragment {
                     String tempPass = password.getText().toString();
                     if(!tempPass.equals("")){
                         user.setPassword(tempPass);
+                        Registry registry = Registry.getInstance();
+                        registry.startDatabase(getContext());
+                        if(registry.updatePassword(user)){
+                            Toast.makeText(getContext(), "Password changed", Toast.LENGTH_SHORT).show();
+                        }
+                        registry.stopDatabase();
                     }
                 }
             });

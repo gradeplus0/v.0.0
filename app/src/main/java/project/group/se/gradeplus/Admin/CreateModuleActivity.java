@@ -24,16 +24,21 @@ public class CreateModuleActivity extends AppCompatActivity {
         name = findViewById(R.id.module_name);
         registry = Registry.getInstance();
         submit = findViewById(R.id.module_add_button);
+        credit = findViewById(R.id.module_credit);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String moduleName = name.getText().toString();
-                registry.startDatabase(getApplicationContext());
-                if(registry.addModuleToDB(new Module(registry.getTotalModules(),moduleName))){
-                    Toast.makeText(CreateModuleActivity.this, "Module is added", Toast.LENGTH_SHORT).show();
+                if(!moduleName.isEmpty() || !credit.getText().toString().isEmpty()) {
+                    registry.startDatabase(getApplicationContext());
+                    if (registry.addModuleToDB(new Module(registry.getTotalModules(), moduleName))) {
+                        Toast.makeText(CreateModuleActivity.this, "Module is added", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(CreateModuleActivity.this, "Module exists", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
-                    Toast.makeText(CreateModuleActivity.this, "Module exists", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateModuleActivity.this, "Please enter all details.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

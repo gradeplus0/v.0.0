@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.net.ConnectException;
 import java.util.*;
 
 public class Registry implements Serializable {
@@ -803,6 +804,30 @@ public class Registry implements Serializable {
             System.out.println("Error : getMarksForStudent()");
         }
         return null;
+    }
+
+    public double getStudentsAverage(int workid){
+        try {
+            String query = "SELECT AVG(result_mark) FROM Result where work_id = ?";
+            Cursor cs = this.readDatabase.rawQuery(query, new String[]{String.valueOf(workid)});
+            cs.moveToFirst();
+            return cs.getInt(0);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return 70;
+    }
+
+    public boolean updatePassword(Student student){
+        try {
+            ContentValues values = new ContentValues();
+            values.put("user_password",student.getPassword());
+            this.writeDatabase.update("User",values,"user_id=?",new String[]{String.valueOf(student.getId())});
+            return true;
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return false;
     }
 
     // ********************************************************************************************************* //

@@ -44,15 +44,16 @@ public class Home extends Fragment {
         Student student = (Student) CurrentUser.getInstance().getUser();
         List<Result> results = registry.getMarksForStudent(student);
         String[] allInfo = null;
-        if(results !=null) {
+        if(results !=null && results.size()>0) {
             allInfo = new String[4];
             registry.stopDatabase();
-            this.sort(results);
-            organiseModules(results);
-            allInfo[2] = "Your best module\n\n" + bestModule.getModuleName();
-            allInfo[3] = "Need to work hard (module)\n\n" + worstModule.getModuleName();
-            allInfo[0] = "Best assessed-work(module)\n\n " + bestWork.getWork() + " (" + bestWork.getModuleName() + ")";
-            allInfo[1] = "Worst assessed-work(module)\n\n " + worstWork.getWork() + " (" + worstWork.getModuleName() + ")";
+            if(this.sort(results)) {
+                organiseModules(results);
+                allInfo[2] = "Your best module\n\n" + bestModule.getModuleName();
+                allInfo[3] = "Need to work hard (module)\n\n" + worstModule.getModuleName();
+                allInfo[0] = "Best assessed-work(module)\n\n " + bestWork.getWork() + " (" + bestWork.getModuleName() + ")";
+                allInfo[1] = "Worst assessed-work(module)\n\n " + worstWork.getWork() + " (" + worstWork.getModuleName() + ")";
+            }
         }else{
             allInfo = new String[1];
             allInfo[0] = "Marks are not published yet";
@@ -67,8 +68,8 @@ public class Home extends Fragment {
         return messageRecycler;
     }
 
-    private void sort(List<Result> results){
-        if(results != null) {
+    private boolean sort(List<Result> results){
+        if(results != null && results.size()>1) {
             boolean sorted = false;
             while (!sorted) {
                 sorted = true;
@@ -87,7 +88,13 @@ public class Home extends Fragment {
 
             this.bestWork = results.get(results.size()-1);
             this.worstWork = results.get(0);
+            return true;
+        }else if(results !=null && results.size()==1){
+            this.bestWork = results.get(0);
+            this.worstWork = results.get(0);
+            return true;
         }
+        return false;
     }
 
 
@@ -142,7 +149,7 @@ public class Home extends Fragment {
             if(reqModule2 !=null){
                 worstModule = reqModule2;
             }
-        }else{
+        }else if(modulenames.size()==1){
             bestModule = results.get(0);
             worstModule = bestModule;
         }

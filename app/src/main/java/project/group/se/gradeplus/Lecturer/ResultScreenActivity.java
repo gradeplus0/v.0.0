@@ -49,13 +49,22 @@ public class ResultScreenActivity extends AppCompatActivity {
                 ResultScreenActivity that = ResultScreenActivity.this;
                 Registry registry = Registry.getInstance();
                 registry.startDatabase(ResultScreenActivity.this);
-                int marks = (int) Double.parseDouble(that.marks.getText().toString());
+                String tempMarks = that.marks.getText().toString();
                 String feedback = that.feedback.getText().toString();
-                boolean res= registry.addResultForStudent(that.student,that.work,feedback,marks);
-                if(res){
-                    Toast.makeText(that, "Result uploaded", Toast.LENGTH_SHORT).show();
+                if(!tempMarks.isEmpty() && !feedback.isEmpty()) {
+                    int marks = (int) Double.parseDouble(tempMarks);
+                    if(marks>=0 && marks<=100) {
+                        boolean res = registry.addResultForStudent(that.student, that.work, feedback, marks);
+                        if (res) {
+                            Toast.makeText(that, "Result uploaded", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(that, "Result is not uploaded due to database problem", Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(that, "Marks should be between 0-100", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
-                    Toast.makeText(that, "Result is not uploaded due to database problem", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(that, "Please enter all the details", Toast.LENGTH_SHORT).show();
                 }
             }
         });

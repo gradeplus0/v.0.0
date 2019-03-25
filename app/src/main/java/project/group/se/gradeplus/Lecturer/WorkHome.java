@@ -60,16 +60,20 @@ public class WorkHome extends AppCompatActivity {
                 WorkHome that = WorkHome.this;
                 Registry registry = Registry.getInstance();
                 registry.startDatabase(that);
-                List<Student> students = registry.getStudentWithNoResults(that.work,that.module);
-                if(students!=null){
-                    if(students.size() ==0){
-                        registry.uploadResult(that.work);
-                        Toast.makeText(that, "Result uploaded", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(that, "Please add results for all students", Toast.LENGTH_SHORT).show();
+                if(!registry.isResultUploaded(work)) {
+                    List<Student> students = registry.getStudentWithNoResults(that.work, that.module);
+                    if (students != null) {
+                        if (students.size() == 0) {
+                            registry.uploadResult(that.work);
+                            Toast.makeText(that, "Result uploaded", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(that, "Please add results for all students", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(that, "Students not enrolled yet", Toast.LENGTH_SHORT).show();
                     }
                 }else{
-                    Toast.makeText(that, "Students not enrolled yet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(that, "Result is already uploaded", Toast.LENGTH_SHORT).show();
                 }
 
                 registry.stopDatabase();

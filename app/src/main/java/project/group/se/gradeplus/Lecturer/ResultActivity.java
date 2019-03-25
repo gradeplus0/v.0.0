@@ -49,7 +49,7 @@ public class ResultActivity extends AppCompatActivity {
             adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,students);
             studentListView.setAdapter(adapter);
         }else{
-            Toast.makeText(this, "Result is uploade or Student not enrolled yet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Result is uploaded or Student not enrolled yet", Toast.LENGTH_SHORT).show();
             Intent in = new Intent(this,WorkHome.class);
             in.putExtra(WorkHome.MODULE_NAME,module.getName());
             in.putExtra(WorkHome.MODULE_ID,module.getModuleId());

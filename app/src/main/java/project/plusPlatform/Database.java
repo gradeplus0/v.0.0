@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Database extends SQLiteOpenHelper implements Serializable {
 
     private static final String DB_NAME = "Gradeplus";
-    private static final int DB_VERSION = 6;
+    private static final int DB_VERSION = 8;
     private enum userTypes {
         ADMIN, STUDENT, LECTURER
     }
@@ -92,6 +92,10 @@ public class Database extends SQLiteOpenHelper implements Serializable {
             values.put("user_email","kmalik@AD.qmul.ac.uk");
             values.put("user_password","111222");
             db.insert("User",null,values);
+        }
+        if(newVersion ==8){
+            db.execSQL("DELETE FROM User where user_email = 'mehdi@ST.qmul.ac.uk';");
+            System.out.println("User deleted");
         }
     }
 }
